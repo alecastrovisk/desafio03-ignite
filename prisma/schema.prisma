@@ -36,7 +36,7 @@ enum IndependenceLevel {
   ALTA
 }
 
-model Pet {
+model Pets {
   id String @id @default(uuid())
 
   about String @db.VarChar(255)
@@ -45,15 +45,15 @@ model Pet {
 
   age AnimalAge
 
-  energy_level EnergyLevel
+  energy_level EnergyLevel?
 
-  animal_size AnimalSize
+  animal_size AnimalSize?
 
-  independence_level IndependenceLevel
+  independence_level IndependenceLevel?
 
-  requirements String?
+  requirements String[]
 
-  photos String
+  photos String?
 
   uf String
 
