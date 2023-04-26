@@ -9,3 +9,57 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum AnimalSize {
+  MINI
+  PEQUENO
+  MEDIO
+  GRANDE
+  GIGANTE
+}
+
+enum AnimalAge {
+  FILHOTE
+  ADULTO
+  IDOSO
+}
+
+enum EnergyLevel {
+  BAIXA
+  MEDIA
+  ALTA
+}
+
+enum IndependenceLevel {
+  BAIXA
+  MEDIA
+  ALTA
+}
+
+model Pet {
+  id String @id @default(uuid())
+
+  about String @db.VarChar(255)
+
+  name String
+
+  age AnimalAge
+
+  energy_level EnergyLevel
+
+  animal_size AnimalSize
+
+  independence_level IndependenceLevel
+
+  requirements String?
+
+  photos String
+
+  uf String
+
+  city String
+
+  created_at DateTime @default(now())
+
+  @@map("pets")
+}
