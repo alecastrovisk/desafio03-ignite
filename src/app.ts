@@ -1,32 +1,21 @@
-import fastify, { FastifyReply, FastifyRequest } from 'fastify'
-import { z } from 'zod'
-import { prisma } from './lib/prisma'
+import fastify from 'fastify'
+import { ZodError } from 'zod'
+import { env } from './env'
 
 export const app = fastify()
 
-app.post('/pets', async (request: FastifyRequest, reply: FastifyReply) => {
-  const registerBodySchema = z.object({
-    name: z.string(),
-    about: z.string().max(255),
-    animalAge: z.enum(['FILHOTE', 'ADULTO', 'IDOSO']).default('ADULTO'),
-    requirements: z.array(z.string()),
-    uf: z.string(),
-    city: z.string(),
-  })
+app.setErrorHandler((error, request, reply) => {
+  if (error instanceof ZodError) {
+    return reply
+      .status(400)
+      .send({ message: 'Validation Error', issues: error.format() })
+  }
 
-  const { about, animalAge, city, name, requirements, uf } =
-    registerBodySchema.parse(request.body)
+  if (env.NODE_ENV === 'production') {
+    console.log(error)
+  } else {
+    // to-do
+  }
 
-  await prisma.pets.create({
-    data: {
-      about,
-      age: animalAge,
-      city,
-      uf,
-      name,
-      requirements,
-    },
-  })
-
-  return reply.status(200).send()
+  return reply.status(500).send({ message: 'Internal server error' })
 })

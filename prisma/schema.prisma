@@ -45,11 +45,11 @@ model Pets {
 
   age AnimalAge
 
-  energy_level EnergyLevel?
+  energy_level EnergyLevel
 
-  animal_size AnimalSize?
+  animal_size AnimalSize
 
-  independence_level IndependenceLevel?
+  independence_level IndependenceLevel
 
   requirements String[]
 
@@ -61,5 +61,25 @@ model Pets {
 
   created_at DateTime @default(now())
 
+  Orgs Orgs @relation(fields: [orgsId], references: [id])
+
+  orgsId String
+
   @@map("pets")
+}
+
+model Orgs {
+  id String @id @default(uuid())
+
+  adress String
+
+  cep String?
+
+  phone String
+
+  email String @unique
+
+  password_hash String
+
+  pets Pets[]
 }
