@@ -3,9 +3,10 @@ import {
   AnimalSize,
   EnergyLevel,
   IndependenceLevel,
-  Pets,
+  Pet,
 } from '@prisma/client'
-import { PetsRepository } from '../../repositories/pets-repository'
+
+import { PetsRepository } from '../repositories/pets-repository'
 
 interface RegisterUseCaseRequest {
   about: string
@@ -21,11 +22,28 @@ interface RegisterUseCaseRequest {
 }
 
 interface RegisterUseCaseResponse {
-  pet: Pets
+  pet: Pet
 }
 
 export class RegisterUseCase {
   constructor(private petsRepository: PetsRepository) {}
 
-  async execute() {}
+  async execute({
+    about,
+    age,
+    animal_size,
+    city,
+    energy_level,
+    independence_level,
+    name,
+    orgId,
+    uf,
+    requirements,
+  }: RegisterUseCaseRequest): RegisterUseCaseResponse {
+    // to-do: Create Orgs before register a pet!!
+
+    return {
+      pet,
+    }
+  }
 }
