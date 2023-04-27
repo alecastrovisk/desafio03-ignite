@@ -36,7 +36,7 @@ enum IndependenceLevel {
   ALTA
 }
 
-model Pets {
+model Pet {
   id String @id @default(uuid())
 
   about String @db.VarChar(255)
@@ -61,14 +61,14 @@ model Pets {
 
   created_at DateTime @default(now())
 
-  Orgs Orgs @relation(fields: [orgsId], references: [id])
+  Org Org @relation(fields: [orgId], references: [id])
 
-  orgsId String
+  orgId String
 
   @@map("pets")
 }
 
-model Orgs {
+model Org {
   id String @id @default(uuid())
 
   adress String
@@ -81,5 +81,7 @@ model Orgs {
 
   password_hash String
 
-  pets Pets[]
+  pets Pet[]
+
+  @@map("orgs")
 }
