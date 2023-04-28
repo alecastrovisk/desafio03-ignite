@@ -25,7 +25,7 @@ interface RegisterUseCaseResponse {
   pet: Pet
 }
 
-export class RegisterUseCase {
+export class PetRegisterUseCase {
   constructor(private petsRepository: PetsRepository) {}
 
   async execute({
