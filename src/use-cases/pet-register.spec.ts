@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
-import { OrgsRepository } from '@/repositories/orgs-repository'
 import { PetRegisterUseCase } from './pet-register'
 import { InMemoryPetsRepository } from '../repositories/in-memory/in-memory-pets-repository'
 import { InMemoryOrgsRepository } from '../repositories/in-memory/in-memory-orgs-repository'
+import { OrgNotFoundError } from './errors/org-not-found-error'
 
 let petsRepository: InMemoryPetsRepository
-let orgsRepository: OrgsRepository
+let orgsRepository: InMemoryOrgsRepository
 let petRegisterUseCase: PetRegisterUseCase
 
 describe('Pet Register Use Case', () => {
@@ -38,5 +38,21 @@ describe('Pet Register Use Case', () => {
     })
 
     expect(pet.id).toEqual(expect.any(String))
+  })
+
+  it('Should not be able to register a pet without an org', async () => {
+    await expect(() =>
+      petRegisterUseCase.execute({
+        about: 'Lindo pet de teste',
+        age: 'ADULTO',
+        animal_size: 'GRANDE',
+        city: 'Manaus',
+        uf: 'Amazonas',
+        energy_level: 'BAIXA',
+        independence_level: 'ALTA',
+        name: 'Simba teste',
+        orgId: 'not-exist-id',
+      }),
+    ).rejects.toBeInstanceOf(OrgNotFoundError)
   })
 })
