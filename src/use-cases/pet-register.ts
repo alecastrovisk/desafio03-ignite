@@ -17,11 +17,9 @@ interface RegisterUseCaseRequest {
   energy_level: EnergyLevel
   animal_size: AnimalSize
   independence_level: IndependenceLevel
-  requirements?: string[]
   uf: string
   city: string
   orgId: string
-  photos: string
 }
 
 interface RegisterUseCaseResponse {
@@ -44,8 +42,6 @@ export class PetRegisterUseCase {
     name,
     orgId,
     uf,
-    requirements,
-    photos,
   }: RegisterUseCaseRequest): Promise<RegisterUseCaseResponse> {
     const orgExists = this.orgsRepository.findById(orgId)
 
@@ -62,8 +58,6 @@ export class PetRegisterUseCase {
       independence_level,
       name,
       uf,
-      photos,
-      requirements,
       orgId,
     })
 
