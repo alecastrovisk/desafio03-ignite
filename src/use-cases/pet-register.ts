@@ -7,6 +7,8 @@ import {
 } from '@prisma/client'
 
 import { PetsRepository } from '../repositories/pets-repository'
+import { OrgsRepository } from '@/repositories/orgs-repository'
+import { OrgNotFoundError } from './errors/org-not-found-error'
 
 interface RegisterUseCaseRequest {
   about: string
@@ -19,6 +21,7 @@ interface RegisterUseCaseRequest {
   uf: string
   city: string
   orgId: string
+  photos: string
 }
 
 interface RegisterUseCaseResponse {
@@ -26,7 +29,10 @@ interface RegisterUseCaseResponse {
 }
 
 export class PetRegisterUseCase {
-  constructor(private petsRepository: PetsRepository) {}
+  constructor(
+    private petsRepository: PetsRepository,
+    private orgsRepository: OrgsRepository,
+  ) {}
 
   async execute({
     about,
@@ -39,8 +45,27 @@ export class PetRegisterUseCase {
     orgId,
     uf,
     requirements,
-  }: RegisterUseCaseRequest): RegisterUseCaseResponse {
-    // to-do: Create Orgs before register a pet!!
+    photos,
+  }: RegisterUseCaseRequest): Promise<RegisterUseCaseResponse> {
+    const orgExists = this.orgsRepository.findById(orgId)
+
+    if (!orgExists) {
+      throw new OrgNotFoundError()
+    }
+
+    const pet = await this.petsRepository.create({
+      about,
+      age,
+      animal_size,
+      city,
+      energy_level,
+      independence_level,
+      name,
+      uf,
+      photos,
+      requirements,
+      orgId,
+    })
 
     return {
       pet,
