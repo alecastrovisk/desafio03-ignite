@@ -8,7 +8,7 @@ import {
 
 import { PetsRepository } from '../repositories/pets-repository'
 import { OrgsRepository } from '@/repositories/orgs-repository'
-import { OrgNotFoundError } from './errors/org-not-found-error'
+import { OrgNotFoundError } from './errors/not-found-error'
 
 interface RegisterUseCaseRequest {
   about: string

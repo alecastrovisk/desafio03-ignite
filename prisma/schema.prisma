@@ -53,19 +53,37 @@ model Pet {
 
   requirements String[]
 
-  photos String?
-
   uf String
 
   city String
 
   created_at DateTime @default(now())
 
+  Image Image[]
+
   Org Org @relation(fields: [orgId], references: [id])
 
   orgId String
 
   @@map("pets")
+}
+
+model Image {
+  id String @id @default(uuid())
+
+  Pet Pet @relation(fields: [petId], references: [id]) 
+
+  petId String
+
+  filename String
+  
+  path String
+
+  created_at DateTime @default(now())
+
+  updated_at DateTime @default(now())
+
+  @@map("images")
 }
 
 model Org {
