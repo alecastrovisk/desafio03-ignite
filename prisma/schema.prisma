@@ -51,8 +51,6 @@ model Pet {
 
   independence_level IndependenceLevel
 
-  requirements String[]
-
   uf String
 
   city String
@@ -60,6 +58,8 @@ model Pet {
   created_at DateTime @default(now())
 
   Image Image[]
+
+  Requirement Requirement[]
 
   Org Org @relation(fields: [orgId], references: [id])
 
@@ -71,12 +71,12 @@ model Pet {
 model Image {
   id String @id @default(uuid())
 
-  Pet Pet @relation(fields: [petId], references: [id]) 
+  Pet Pet @relation(fields: [petId], references: [id])
 
   petId String
 
   filename String
-  
+
   path String
 
   created_at DateTime @default(now())
@@ -84,6 +84,16 @@ model Image {
   updated_at DateTime @default(now())
 
   @@map("images")
+}
+
+model Requirement {
+  id String @id @default(uuid())
+
+  name String @db.VarChar(255)
+
+  Pet Pet? @relation(fields: [petId], references: [id])
+
+  petId String?
 }
 
 model Org {
