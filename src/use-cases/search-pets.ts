@@ -1,4 +1,4 @@
-import { PetsRepository } from '@/repositories/pets-repository'
+import { Filter, PetsRepository } from '@/repositories/pets-repository'
 import { Pet } from '@prisma/client'
 
 export interface Query {
@@ -9,6 +9,7 @@ export interface Query {
 interface SearchPetsRequest {
   page: number
   query: Query
+  filter: Filter
 }
 
 interface SearchPetsResponse {
@@ -20,9 +21,10 @@ export class SearchPetsUseCase {
 
   async execute({
     query,
+    filter,
     page,
   }: SearchPetsRequest): Promise<SearchPetsResponse> {
-    const pets = await this.petsRepository.searchMany(query, page)
+    const pets = await this.petsRepository.searchMany(query, filter, page)
 
     return {
       pets,

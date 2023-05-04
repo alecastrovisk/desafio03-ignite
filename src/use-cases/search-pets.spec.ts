@@ -12,18 +12,6 @@ describe('Search Pets Use Case', () => {
   })
 
   it('Should be able to search pets', async () => {
-    await petsRepository.create({
-      about: 'Lindo pet de teste',
-      age: 'ADULTO',
-      animal_size: 'GRANDE',
-      city: 'Manaus',
-      uf: 'Amazonas',
-      energy_level: 'BAIXA',
-      independence_level: 'ALTA',
-      name: 'Simba teste',
-      orgId: 'id-org-teste',
-    })
-
     const pet = await petsRepository.create({
       about: 'Lindo pet de teste',
       age: 'ADULTO',
@@ -32,15 +20,61 @@ describe('Search Pets Use Case', () => {
       uf: 'São Paulo',
       energy_level: 'BAIXA',
       independence_level: 'ALTA',
-      name: 'Simba teste',
+      name: 'Simba teste 2',
       orgId: 'id-org-teste',
     })
 
     const { pets } = await searchPetsUseCase.execute({
-      query: { city: pet.city, uf: pet.uf },
+      query: {
+        city: pet.city,
+        uf: pet.uf,
+        age: pet.age,
+      },
       page: 1,
     })
 
     expect(pets).toHaveLength(1)
   })
+
+  it('Should be able to filter pets by characteristics', async () => {
+    const pet = await petsRepository.create({
+      about: 'Lindo pet de teste',
+      age: 'ADULTO',
+      animal_size: 'GRANDE',
+      city: 'São Paulo',
+      uf: 'São Paulo',
+      energy_level: 'BAIXA',
+      independence_level: 'ALTA',
+      name: 'Simba teste 2',
+      orgId: 'id-org-teste',
+    })
+
+    await petsRepository.create({
+      about: 'pet de teste filhote',
+      age: 'FILHOTE',
+      animal_size: 'PEQUENO',
+      city: 'São Paulo',
+      uf: 'São Paulo',
+      energy_level: 'BAIXA',
+      independence_level: 'ALTA',
+      name: 'Simba teste 2',
+      orgId: 'id-org-teste',
+    })
+
+    const { pets } = await searchPetsUseCase.execute({
+      query: {
+        city: pet.city,
+        uf: pet.uf,
+      },
+      filter: {
+        age: 'ADULTO',
+      },
+      page: 1,
+    })
+
+    expect(pets).toHaveLength(1)
+    expect(pets).toEqual([expect.objectContaining({ age: 'ADULTO' })])
+  })
+  // teste paginação
+  // teste parametros
 })
