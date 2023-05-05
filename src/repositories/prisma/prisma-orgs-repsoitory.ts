@@ -3,6 +3,10 @@ import { OrgsRepository } from '../orgs-repository'
 import { prisma } from '../../lib/prisma'
 
 export class PrismaOrgsRepository implements OrgsRepository {
+  findById(orgId: string): Promise<Org | null> {
+    throw new Error('Method not implemented.')
+  }
+
   async create(data: Prisma.OrgCreateWithoutPetsInput): Promise<Org> {
     const org = prisma.org.create({
       data,

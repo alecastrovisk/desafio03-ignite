@@ -1,7 +1,10 @@
 import fastify from 'fastify'
+import fastifyJwt from '@fastify/jwt'
+import multipart from '@fastify/multipart'
+import multer from 'fastify-multer'
+
 import { ZodError } from 'zod'
 import { env } from './env'
-import fastifyJwt from '@fastify/jwt'
 
 import { petRoutes } from './http/controllers/pets/routes'
 import { orgsRoutes } from './http/controllers/orgs/routes'
@@ -11,6 +14,9 @@ export const app = fastify()
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
 })
+
+app.register(multipart)
+app.register(multer.contentParser)
 
 app.register(petRoutes)
 app.register(orgsRoutes)
