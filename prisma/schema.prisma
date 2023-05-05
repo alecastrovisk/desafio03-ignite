@@ -94,6 +94,8 @@ model Requirement {
   Pet Pet? @relation(fields: [petId], references: [id])
 
   petId String?
+
+  @@map("requirements")
 }
 
 model Org {
