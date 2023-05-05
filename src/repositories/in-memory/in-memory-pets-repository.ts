@@ -8,26 +8,45 @@ export class InMemoryPetsRepository implements PetsRepository {
 
   async searchMany(
     { city, uf }: Query,
-    filter: Filter,
     page: number,
+    filter: Filter | undefined,
   ): Promise<Pet[]> {
-    if (!filter) {
-      return this.pets
-        .filter((pet) => city === pet.city && uf === pet.uf)
-        .slice((page - 1) * 20, page * 20)
-    }
+    const filteredPets = this.pets
+      .filter((pet) => {
+        if (city !== pet.city && uf !== pet.uf) {
+          return false
+        }
 
-    return this.pets.filter((pet) => {
-      if (filter.age !== pet.age) {
-        return null
-      }
+        if (filter?.age !== undefined && filter?.age !== pet.age) {
+          return false
+        }
 
-      if (filter.animal_size !== pet.animal_size) {
-        return null
-      }
+        if (
+          filter?.animal_size !== undefined &&
+          filter?.animal_size !== pet.animal_size
+        ) {
+          return false
+        }
 
-      return true
-    })
+        if (
+          filter?.energy_level !== undefined &&
+          filter?.energy_level !== pet.energy_level
+        ) {
+          return false
+        }
+
+        if (
+          filter?.independence_level !== undefined &&
+          filter?.independence_level !== pet.independence_level
+        ) {
+          return false
+        }
+
+        return true
+      })
+      .slice((page - 1) * 20, page * 20)
+
+    return filteredPets
   }
 
   async create(data: Prisma.PetUncheckedCreateInput): Promise<Pet> {

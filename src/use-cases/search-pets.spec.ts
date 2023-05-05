@@ -28,7 +28,6 @@ describe('Search Pets Use Case', () => {
       query: {
         city: pet.city,
         uf: pet.uf,
-        age: pet.age,
       },
       page: 1,
     })
@@ -67,7 +66,10 @@ describe('Search Pets Use Case', () => {
         uf: pet.uf,
       },
       filter: {
-        age: 'ADULTO',
+        age: pet.age,
+        animal_size: pet.animal_size,
+        energy_level: pet.energy_level,
+        independence_level: pet.independence_level,
       },
       page: 1,
     })
@@ -75,6 +77,30 @@ describe('Search Pets Use Case', () => {
     expect(pets).toHaveLength(1)
     expect(pets).toEqual([expect.objectContaining({ age: 'ADULTO' })])
   })
-  // teste paginação
-  // teste parametros
+
+  it('Should be able to filter by page', async () => {
+    for (let i = 1; i <= 22; i++) {
+      await petsRepository.create({
+        about: `pet de teste filhote ${i}`,
+        age: 'FILHOTE',
+        animal_size: 'PEQUENO',
+        city: 'São Paulo',
+        uf: 'São Paulo',
+        energy_level: 'BAIXA',
+        independence_level: 'ALTA',
+        name: 'Simba teste 2',
+        orgId: 'id-org-teste',
+      })
+    }
+
+    const { pets } = await searchPetsUseCase.execute({
+      query: {
+        city: 'São Paulo',
+        uf: 'São Paulo',
+      },
+      page: 2,
+    })
+
+    expect(pets).toHaveLength(2)
+  })
 })

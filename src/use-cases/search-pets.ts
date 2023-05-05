@@ -9,7 +9,7 @@ export interface Query {
 interface SearchPetsRequest {
   page: number
   query: Query
-  filter: Filter
+  filter?: Filter
 }
 
 interface SearchPetsResponse {
@@ -21,10 +21,10 @@ export class SearchPetsUseCase {
 
   async execute({
     query,
-    filter,
     page,
+    filter,
   }: SearchPetsRequest): Promise<SearchPetsResponse> {
-    const pets = await this.petsRepository.searchMany(query, filter, page)
+    const pets = await this.petsRepository.searchMany(query, page, filter)
 
     return {
       pets,
