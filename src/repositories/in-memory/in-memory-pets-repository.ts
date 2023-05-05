@@ -6,6 +6,16 @@ import { Query } from '@/use-cases/search-pets'
 export class InMemoryPetsRepository implements PetsRepository {
   pets: Pet[] = []
 
+  async findById(petId: string) {
+    const pet = this.pets.find((pet) => pet.id === petId)
+
+    if (!pet) {
+      return null
+    }
+
+    return pet
+  }
+
   async searchMany(
     { city, uf }: Query,
     page: number,

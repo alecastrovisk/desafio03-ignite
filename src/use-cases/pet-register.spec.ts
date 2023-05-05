@@ -2,7 +2,7 @@
 import { PetRegisterUseCase } from './pet-register'
 import { InMemoryPetsRepository } from '../repositories/in-memory/in-memory-pets-repository'
 import { InMemoryOrgsRepository } from '../repositories/in-memory/in-memory-orgs-repository'
-import { OrgNotFoundError } from './errors/org-not-found-error'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 let petsRepository: InMemoryPetsRepository
 let orgsRepository: InMemoryOrgsRepository
@@ -53,6 +53,6 @@ describe('Pet Register Use Case', () => {
         name: 'Simba teste',
         orgId: 'not-exist-id',
       }),
-    ).rejects.toBeInstanceOf(OrgNotFoundError)
+    ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 })

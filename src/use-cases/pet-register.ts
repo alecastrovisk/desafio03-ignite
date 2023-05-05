@@ -8,7 +8,7 @@ import {
 
 import { PetsRepository } from '../repositories/pets-repository'
 import { OrgsRepository } from '@/repositories/orgs-repository'
-import { OrgNotFoundError } from './errors/org-not-found-error'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface RegisterUseCaseRequest {
   about: string
@@ -46,7 +46,7 @@ export class PetRegisterUseCase {
     const orgExists = await this.orgsRepository.findById(orgId)
 
     if (!orgExists) {
-      throw new OrgNotFoundError()
+      throw new ResourceNotFoundError()
     }
 
     const pet = await this.petsRepository.create({

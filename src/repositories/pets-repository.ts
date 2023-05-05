@@ -11,4 +11,5 @@ export interface Filter {
 export interface PetsRepository {
   create(data: Prisma.PetUncheckedCreateInput): Promise<Pet>
   searchMany(query: Query, page: number, filter?: Filter): Promise<Pet[]>
+  findById(petId: string): Promise<Pet | null>
 }
