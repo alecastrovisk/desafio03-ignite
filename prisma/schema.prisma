@@ -57,7 +57,7 @@ model Pet {
 
   created_at DateTime @default(now())
 
-  Image Image[]
+  PetImage PetImage[]
 
   Requirement Requirement[]
 
@@ -68,7 +68,7 @@ model Pet {
   @@map("pets")
 }
 
-model Image {
+model PetImage {
   id String @id @default(uuid())
 
   Pet Pet @relation(fields: [petId], references: [id])
@@ -77,13 +77,13 @@ model Image {
 
   filename String
 
-  path String
+  path String?
 
   created_at DateTime @default(now())
 
   updated_at DateTime @default(now())
 
-  @@map("images")
+  @@map("pet_images")
 }
 
 model Requirement {
